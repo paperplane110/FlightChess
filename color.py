@@ -4,15 +4,15 @@ version:
 Author: TianyuYuan
 Date: 2021-01-22 17:21:43
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-23 15:57:07
+LastEditTime: 2021-01-24 01:06:21
 '''
 def color(string,color="k",bold=False):
     if color == "g":
         return g(string,bold)
     elif color == "r":
         return r(string,bold)
-    elif color == "p":
-        return p(string,bold)
+    elif color == "y":
+        return y(string,bold)
     elif color == "b":
         return b(string,bold)
     else:
@@ -32,12 +32,12 @@ def r(string,bold=False):
     else:
         return "\033[31m{}\033[0m".format(string)
 
-def p(string,bold=False):
+def y(string,bold=False):
     '''let string become pink'''
     if bold == 'b':
-        return "\033[1;35m{}\033[0m".format(string)
+        return "\033[1;33m{}\033[0m".format(string)
     else:
-        return "\033[35m{}\033[0m".format(string)
+        return "\033[33m{}\033[0m".format(string)
 
 def b(string,bold=False):
     '''let string become blue'''
