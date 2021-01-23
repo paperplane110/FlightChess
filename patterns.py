@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-22 22:44:59
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-23 14:42:03
+LastEditTime: 2021-01-23 14:44:07
 '''
 from draw import Cell
 ###### Unit #######
