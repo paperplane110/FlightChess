@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-22 17:21:43
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-22 21:50:34
+LastEditTime: 2021-01-23 15:57:07
 '''
 def color(string,color="k",bold=False):
     if color == "g":
@@ -51,4 +51,4 @@ def k(string,bold=False):
     if bold == 'b':
         return "\033[1;0m{}\033[0m".format(string)
     else:
-        return string
+        return "\033[0m{}\033[0m".format(string)
