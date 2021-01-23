@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 23:09:05
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-23 12:17:08
+LastEditTime: 2021-01-23 14:54:40
 '''
 from color import color
 
@@ -67,6 +67,10 @@ class Cell():
         self.matrix = self.init_matrix("#")
         self.show_cell() 
         self.read_pattern(self.pattern)
+
+    def shape(self) -> list:
+        '''Return the shape of the cell:[row,col]'''
+        return [self.height,self.width]
 
 
 ##### Old code ######
