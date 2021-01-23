@@ -4,15 +4,17 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 22:44:19
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-23 14:43:29
+LastEditTime: 2021-01-23 15:31:24
 '''
 import copy
 from draw import Cell
 from color import color
 from patterns import BlankCell,BlackCell
 
+# Init patterns
 blank_cell = BlankCell()
 black_cell = BlackCell()
+
 class Sky():
     '''The sky of the flight chess'''
     def __init__(self,cell_width,cell_height,cells_in_edge):
@@ -21,7 +23,7 @@ class Sky():
         --width：单元格宽度
         --height：单元格高度
         --cells_in_edge：正方形棋盘一边有多少个单元格
-        --cell_matrix 单元格矩阵，三维矩阵，矩阵的前两维为cell的平面坐标，第三维为cell所包含的图层，默认为空图层
+        --cell_matrix：单元格矩阵，三维矩阵，矩阵的前两维为cell的平面坐标，第三维为cell所包含的图层，默认为空图层
         """
         self.width = cell_width
         self.height = cell_height
@@ -82,27 +84,47 @@ class Sky():
         matrix_n = cell_n * self.width
         return [matrix_m,matrix_n]
     
+    def refresh_matrix(self) -> list:
+        '''根据cell_matrix中各单元格的图案记录，将相应的字符书写到sky的大矩阵中'''
+        cell_matrix = self.cell_matrix
+        sky_matrix = self.matrix
+        edge = self.edge
+        for i in range(edge):
+            for j in range(edge):
+                for pattern in cell_matrix[i][j]:
+                    position = self.cell2matrix([i,j])
+                    x = position[0]
+                    y = position[1]
+                    # 该函数已经改写了sky_matrix，因此无需return
+                    add_pattern(x,y,sky_matrix,pattern.matrix)
 
-def shape(matrix):
-    m = len(matrix)
-    n = len(matrix[0])
-    return m,n
 
-def add_pattern(x,y,matrix,pattern):
-    m,n = shape(pattern)
+
+
+def add_pattern(x,y,matrix:list,pattern:list) -> list:
+    '''
+    将pattern中的字符写入matrix，pattern位置由其左上角的坐标决定
+    --x：pattern绘制的起点的行坐标
+    --y：pattern绘制的起点的列坐标
+    --matrix：sky_matrix 大矩阵，background
+    --pattern：pattern.matrix 单元格矩阵，记录了每个位置的字符和颜色
+    '''
+    m,n = pattern.shape()
     for i in range(m):
         for j in range(n):
-            matrix[x+i][y+j] = pattern[i][j]
+            bg_symbol = strip_color(matrix[x+i][y+j])
+            fg_symbol = strip_color(pattern[i][j])
+            if fg_symbol == " ":
+                continue
+            elif bg_symbol == " ":
+                matrix[x+i][y+j] = pattern[i][j]
+            else:
+                print("Error: Pattern overlapping! Cell matrix position [{},{}]".format(i,j))
     return matrix
 
-def scale_map(matrix,cells,button):
-    for position in cells:
-        m = position[0]
-        n = position[1]
-        x = (m)*3
-        y = (n)*6
-        matrix = add_pattern(x,y,matrix,button)
-    return matrix
+def strip_color(string:str):
+    '''将字符串的颜色标记去掉'''
+    return string.split("m")[-2][0]
 
 sky = Sky(6,3,7)
 sky.show_range()
