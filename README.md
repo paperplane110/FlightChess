@@ -4,12 +4,11 @@
  * @Author: TianyuYuan
  * @Date: 2021-01-23 13:25:37
  * @LastEditors: TianyuYuan
- * @LastEditTime: 2021-01-23 13:49:38
+ * @LastEditTime: 2021-01-23 14:46:42
 -->
 # FlightChess
 Flight chess game played on termial
 ## Usage
----
 Open the terminal and go to a dir where you want to install this game, then clone the code to the local path.
 ### For example:
 ```bash
@@ -17,11 +16,10 @@ cd ~/Desktop/
 git clone https://github.com/paperplane110/FlightChess.git
 ```
 ## Game Composition
----
+
 
 
 ## Thinking
----
 ### 2021.01.23
 + 数字矩阵记录真的好吗？
     + 方便对于空格的覆盖 0+n=n
