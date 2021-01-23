@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 23:09:05
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-23 14:54:40
+LastEditTime: 2021-01-23 15:05:04
 '''
 from color import color
 
@@ -16,6 +16,8 @@ class Cell():
         --height：网格高度（正方形通常为width：height = 2:1）
         --color：单元格内图案的的颜色
         --bold：单元格内字体是否加粗，若加粗则"b"
+        --pattern：Cell的图案
+        --matrix：二维矩阵，记录了相应位置的字符及颜色
         '''
         self.width = width
         self.height = height
@@ -68,10 +70,9 @@ class Cell():
         self.show_cell() 
         self.read_pattern(self.pattern)
 
-    def shape(self) -> list:
-        '''Return the shape of the cell:[row,col]'''
-        return [self.height,self.width]
-
+    def shape(self) -> tuple:
+        '''Return the shape of the cell:(row,col)'''
+        return self.height,self.width
 
 ##### Old code ######
     # def zero(self,digit=0):
