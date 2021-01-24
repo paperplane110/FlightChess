@@ -4,14 +4,15 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 22:44:19
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-24 01:03:58
+LastEditTime: 2021-01-25 02:47:06
 '''
 import copy
 from draw import Cell
 from color import color
 from patterns import BlankCell,TestCell1,TestCell2,AirlineCell,Airport,Corner
 from patterns import C_BOTTOM_RIGHT,C_BOTTOM_lEFT,C_TOP_LEFT,C_TOP_RIGHT
-from map_info import AIRLINE,R_ROUTINE,B_ROUTINE,G_ROUTINE,Y_ROUTINE
+from patterns import create_arrow,create_planecell
+from map_info import AIRLINE
 
 ###### Instantiation patterns #######
 e_cell = BlankCell()
@@ -30,17 +31,26 @@ c_br = Corner(C_BOTTOM_RIGHT)
 c_bl = Corner(C_BOTTOM_lEFT)
 c_tr = Corner(C_TOP_RIGHT)
 c_tl = Corner(C_TOP_LEFT)
+a_right = create_arrow('right')
+a_up = create_arrow('up')
+a_down = create_arrow('down')
+a_left = create_arrow('left')
 
 ###### Build the Sky ######
 class Sky():
-    '''The sky of the flight chess'''
+    '''
+    The sky of the flight chess
+    - width：单元格宽度
+    - height：单元格高度
+    - cells_in_edge：正方形棋盘一边有多少个单元格
+    '''
     def __init__(self,cell_width,cell_height,cells_in_edge):
         """
         Initiation of the Sky
-        --width：单元格宽度
-        --height：单元格高度
-        --cells_in_edge：正方形棋盘一边有多少个单元格
-        --cell_matrix：单元格矩阵，三维矩阵，矩阵的前两维为cell的平面坐标，第三维为cell所包含的图层，默认为空图层
+        - cell_matrix：单元格矩阵，三维矩阵，矩阵的前两维为cell的平面坐标，第三维为cell所包含的图层，默认为空图层
+        + e.g. cell_matrix[0][0] = [e_cell,Y_AIRPORT,y1_plane]
+        + 其意义为，在[0,0]位置绘制三个图层：e_cell空单元格，黄色飞机场，黄色飞机一号
+        + 不同图层如有重叠，只允许字符覆盖空格，空格不会覆盖下层字符
         """
         self.width = cell_width
         self.height = cell_height
@@ -72,15 +82,26 @@ class Sky():
                 row.append([pattern])
             matrix.append(row)
         return matrix
+
+    def add_pattern2cell_matrix(self,object_name:str,pos:list):
+        '''将图案实例的名字添加到cell_matrix中(recalled in plane.py)'''
+        m,n = pos[0],pos[1]
+        self.cell_matrix[m][n].append(object_name)
+
+    def remove_patter_in_cell_matrix(self,object_name:str,pos:list):
+        '''将图案实例从cell_matrix的某一位置移除(recalled in plane.py)'''
+        m,n = pos[0],pos[1]
+        self.cell_matrix[m][n].remove(object_name)
         
     def show_sky(self):
         '''打印单元格，用于预览效果'''
         matrix = self.matrix
+        line = ""
         for row in matrix:
-            line = ""
             for bit in row:
                 line += bit
-            print(line) 
+            line += "\n"
+        print(line) 
 
     def show_range(self):
         matrix = copy.deepcopy(self.matrix)
@@ -145,27 +166,30 @@ class Sky():
         cell_matrix[12][12].append(b_air)
         # Airline Cell
         for cell_info in AIRLINE:
-            c = cell_info.pop(-1)
-            if c == 'r':
-                load_from_list(cell_matrix,r_cell,cell_info)
-            elif c == 'b':
-                load_from_list(cell_matrix,b_cell,cell_info)
-            elif c == 'g':
-                load_from_list(cell_matrix,g_cell,cell_info)
-            elif c == 'y':
-                load_from_list(cell_matrix,y_cell,cell_info)
-            elif c == 'cbl':
-                load_from_list(cell_matrix,c_bl,cell_info)
-            elif c == 'cbr':
-                load_from_list(cell_matrix,c_br,cell_info)
-            elif c == 'ctl':
-                load_from_list(cell_matrix,c_tl,cell_info)
-            elif c == 'ctr':
-                load_from_list(cell_matrix,c_tr,cell_info)
-            else:
-                print("Fatal Error, wrong color in CELL_DICT:{}".format(cell_info))
-                exit()
+            c = cell_info[-1]
+            pos = cell_info[0:2]
+            try:
+                cell_instance = C2P_DICT[c]
+            except KeyError:
+                print("Error: Color is not included:{}".format(cell_info))
+            load_from_list(cell_matrix,cell_instance,pos)
 
+# mapping from color:str to pattern:object
+C2P_DICT = {
+    'k':k_cell,
+    'r':r_cell,
+    'g':g_cell,
+    'b':b_cell,
+    'y':y_cell,
+    'cbl':c_bl,
+    'cbr':c_br,
+    'ctl':c_tl,
+    'ctr':c_tr,
+    'au':a_up,
+    'ad':a_down,
+    'al':a_left,
+    'ar':a_right
+}
 
 def add_pattern(x,y,matrix:list,pattern) -> list:
     '''
@@ -185,12 +209,13 @@ def add_pattern(x,y,matrix:list,pattern) -> list:
             elif bg_symbol == " ":
                 matrix[x+i][y+j] = pattern.matrix[i][j]
             else:
-                print("Error: Pattern overlapping! Cell matrix position [{},{}]".format(i,j))
+                # print("Error: Pattern overlapping! Cell matrix position [{},{}]".format(i,j))
+                pass
     return matrix
 
 def strip_color(string:str):
     '''将字符串的颜色标记去掉'''
     return string.split("m")[-2][0]
         
-sky = Sky(6,3,15)
-sky.show_sky()
+SKY = Sky(6,3,15)
+# SKY.show_sky()
