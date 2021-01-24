@@ -4,7 +4,7 @@
  * @Author: TianyuYuan
  * @Date: 2021-01-23 13:25:37
  * @LastEditors: TianyuYuan
- * @LastEditTime: 2021-01-25 02:50:02
+ * @LastEditTime: 2021-01-25 02:56:29
 -->
 # FlightChess
 Flight chess game played on termial
@@ -32,11 +32,11 @@ git clone https://github.com/paperplane110/FlightChess.git
     + <font color=red>图层之间的覆盖问题，空格位于下层可以直接被覆盖
     + 空格位于上层，会覆盖下层字符
     + 需要另外加上if判断来解决这个问题</font>
----
 ### 2021.01.25
 + python没有switch怎么办？
     + 首选利用dict的映射关系来实现switch
     + 实在不行利用多重if-elif-else
 + 实例化不成功的话，多检查一下class()的括号有没有加
 + 需要重复使用的list，使用pop()的时候要谨慎
-+ <font color=red>上一轮棋子的图层如何删除？</font>
++ <font color=red>上一轮棋子的图层如何删除？
++ 在一个回合中，棋子移动时各项检查顺序是如何的？每种进行多少次检查？</font>
