@@ -4,7 +4,7 @@
  * @Author: TianyuYuan
  * @Date: 2021-01-23 13:25:37
  * @LastEditors: TianyuYuan
- * @LastEditTime: 2021-01-25 02:56:29
+ * @LastEditTime: 2021-01-26 19:51:32
 -->
 # FlightChess
 Flight chess game played on termial
@@ -40,3 +40,10 @@ git clone https://github.com/paperplane110/FlightChess.git
 + 需要重复使用的list，使用pop()的时候要谨慎
 + <font color=red>上一轮棋子的图层如何删除？
 + 在一个回合中，棋子移动时各项检查顺序是如何的？每种进行多少次检查？</font>
+### 2021.01.26
++ 回复：
+    + 上一轮棋子的图层如何删除？
+        + 在每次渲染天空之前，清空字符串矩阵
+    + 在一个回合中，棋子移动时各项检查顺序是如何的？每种进行多少次检查？
+        + 棋子移动结束时，终点检测、颜色检测和捷径检测是高优的
+        + 每次结束移动，都需要终点检测、覆盖检测和碰撞检测
