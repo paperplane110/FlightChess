@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-24 22:19:47
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-25 02:43:21
+LastEditTime: 2021-01-25 20:36:05
 '''
 from skymap import SKY
 from patterns import create_planecell
@@ -48,7 +48,7 @@ class Plane():
     def take_off(self):
         '''Remove the last time record on SKY'''
         pos = self.routine[self.loc][0:2]
-        SKY.remove_patter_in_cell_matrix(self.planecell,pos)
+        SKY.remove_pattern_in_cell_matrix(self.planecell,pos)
         SKY.refresh_matrix()
 
     def fly(self,num):
@@ -82,12 +82,12 @@ class Plane():
         if self.loc == 21:
             self.loc == 33
     
-    def action(self,num):
-        '''all action of plane in one turn'''
-        self.take_off()
-        self.fly(num)
-        self.meet_same_color()
-        self.land_on_map()
+    # def action(self,num):
+    #     '''all action of plane in one turn'''
+    #     self.take_off()
+    #     self.fly(num)
+    #     self.meet_same_color()
+    #     self.land_on_map()
 
 # def init_all_chess
 y1_plane = Plane('y',1)

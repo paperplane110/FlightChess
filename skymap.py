@@ -4,11 +4,12 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 22:44:19
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-25 02:47:06
+LastEditTime: 2021-01-26 17:08:09
 '''
 import copy
 from draw import Cell
 from color import color
+from patterns import WIDTH,HEIGHT
 from patterns import BlankCell,TestCell1,TestCell2,AirlineCell,Airport,Corner
 from patterns import C_BOTTOM_RIGHT,C_BOTTOM_lEFT,C_TOP_LEFT,C_TOP_RIGHT
 from patterns import create_arrow,create_planecell
@@ -83,15 +84,15 @@ class Sky():
             matrix.append(row)
         return matrix
 
-    def add_pattern2cell_matrix(self,object_name:str,pos:list):
-        '''将图案实例的名字添加到cell_matrix中(recalled in plane.py)'''
+    def add_pattern2cell_matrix(self,instance,pos:list):
+        '''将图案实例添加到cell_matrix中(recalled in plane.py)'''
         m,n = pos[0],pos[1]
-        self.cell_matrix[m][n].append(object_name)
+        self.cell_matrix[m][n].append(instance)
 
-    def remove_patter_in_cell_matrix(self,object_name:str,pos:list):
+    def remove_pattern_in_cell_matrix(self,instance,pos:list):
         '''将图案实例从cell_matrix的某一位置移除(recalled in plane.py)'''
         m,n = pos[0],pos[1]
-        self.cell_matrix[m][n].remove(object_name)
+        self.cell_matrix[m][n].remove(instance)
         
     def show_sky(self):
         '''打印单元格，用于预览效果'''
@@ -124,8 +125,15 @@ class Sky():
         matrix_n = cell_n * self.width
         return [matrix_m,matrix_n]
     
+    def clear_matrix(self):
+        '''清空matrix'''
+        for m in range(self.height*self.edge):
+            for n in range(self.width*self.edge):
+                self.matrix[m][n] = color(' ')
+        
     def refresh_matrix(self) -> list:
         '''根据cell_matrix中各单元格的图案记录，将相应的字符书写到sky的大矩阵中'''
+        self.clear_matrix()   # 每次都必须在空白的屏幕上重新绘制，因此需要清空画布
         cell_matrix = self.cell_matrix
         sky_matrix = self.matrix
         edge = self.edge
@@ -145,9 +153,10 @@ class Sky():
         for i in range(edge):
             for j in range(edge):
                 if (i+j)%2 == 0:
-                    cell_matrix[i][j].append(b_cell)
+                    cell_matrix[i][j]=[t1_cell]
                 else:
-                    cell_matrix[i][j].append(g_cell)
+                    cell_matrix[i][j]=[t2_cell]
+        self.clear_matrix()
         self.refresh_matrix()
         self.show_sky()
 
@@ -217,5 +226,6 @@ def strip_color(string:str):
     '''将字符串的颜色标记去掉'''
     return string.split("m")[-2][0]
         
-SKY = Sky(6,3,15)
+SKY = Sky(WIDTH,HEIGHT,15)
+# SKY.test_zebra_map()
 # SKY.show_sky()
