@@ -4,8 +4,9 @@ version:
 Author: TianyuYuan
 Date: 2021-01-24 22:19:47
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-25 20:36:05
+LastEditTime: 2021-01-29 23:30:36
 '''
+import time
 from skymap import SKY
 from patterns import create_planecell
 from map_info import R_ROUTINE,G_ROUTINE,B_ROUTINE,Y_ROUTINE
@@ -20,7 +21,9 @@ class Plane():
         self.planecell = create_planecell(color,num)
         self.object_name = "{}{}_plane".format(color,num)
         self.routine = self.init_routine()
-        self.loc = 0
+        self.routine_lenght = len(self.routine)
+        self.loc = 0 # 棋子的当前位置
+        self.dst = 0 # 棋子该回合的应该到达的终点
         self.land_on_map()
         
     def init_routine(self) -> list:
@@ -56,43 +59,123 @@ class Plane():
         self.loc += num
 
     def crash(self):
-        '''Plane crashed and back to the startpoint'''
+        '''Plane crashed and go back to the startpoint'''
         self.take_off()
         self.loc = 0
         self.land_on_map()
 
-    def meet_corner(self):
+    def meet_corner(self) -> int:
         '''若遇到空白转角，则往前一格'''
         pos_type = self.routine[self.loc][-1]
         if pos_type == 'ctr' or pos_type == 'ctl' or\
             pos_type == 'cbr' or pos_type == 'cbl':
-            self.loc += 1
+            return 1
+        else:
+            return 0
 
-    def meet_same_color(self):
+    def meet_same_color(self) -> bool:
         '''若遇到相同颜色格子，则跳到前方相同颜色的格子上'''
         pos_type = self.routine[self.loc][-1]
         if pos_type == self.color:
-            self.loc += 4
-            '''前进的四个中出现了空白转角'''
-            if pos_type != self.routine[self.loc][-1]:
-                self.loc += 1
-                
-    def check_shortcut(self):
+            return True
+        else:
+            return False
+    
+    def meet_friends(self) -> bool:
+        '''检测是否遇到自己的飞机，遇到则返回1'''
+        # TODO need to done this
+        return False
+
+    def meet_enemies(self) -> bool:
+        '''检测是否遇到对手，遇到则返回1'''
+        # TODO need to done this
+        return False
+
+    def check_end(self) -> bool:
+        '''检查是否位于终点'''
+        if self.loc == self.routine_lenght:
+            return True
+        else:
+            return False
+
+    def check_shortcut(self) -> bool:
         '''check if the plane meets the shortcut'''
         if self.loc == 21:
-            self.loc == 33
+            return True
+        else:
+            return False
     
-    # def action(self,num):
-    #     '''all action of plane in one turn'''
-    #     self.take_off()
-    #     self.fly(num)
-    #     self.meet_same_color()
-    #     self.land_on_map()
+    def onestep(self,step:int):
+        '''行动一步，包括刷新屏幕，停留1s'''
+        if step > 0:
+            step = 1
+        else:
+            step = -1
+        self.take_off()
+        self.fly(step)
+        self.land_on_map()
+        time.sleep(1)
+
+    def check_while_moving(self,steps:int) ->int:
+        '''移动过程中的检查，返回还应该移动的步数'''
+        if self.check_end():
+            # 遇到重点，反向且移动步数减一
+            return steps*(-1)+1
+        else:
+            pass
+        if self.meet_corner():
+            return steps
+        else:
+            # 若棋子在正向移动，则步数减1；反之加一
+            signal = steps/abs(steps)
+            steps = signal*(abs(steps)-1)
+            return steps
+
+    def checking_when_done(self,flag) -> tuple:
+        '''
+        移动结束时进行的检测
+        + return 100: reach the end
+        + return 32: reach the shortcut, change the flag
+        + return 4: meet the same color cell, change the flag
+        + return 1: one step more
+        + return -1: meet the enemy
+        + return 0: end the turn
+        '''
+        #  终点检测
+        if self.check_end():
+            return 100,flag
+        # 空白转角检测
+        if self.meet_corner():
+            return 1,flag
+        # 颜色捷径检测
+        if flag == False:
+            if self.check_shortcut():
+                return 32,True
+            if self.meet_same_color():
+                return 4,True
+        # 碰撞检测
+        if self.meet_friends():
+            return 1,flag
+        elif self.meet_enemies():
+            return -1,flag
+        else: 
+            return 0,flag
+
+    def animate(self,steps,flag=False):
+        while steps != 0:
+            self.onestep(steps)
+            # 移动中的检查
+            steps = self.check_while_moving(steps)
+
+        # TODO 移动后的检查    
+        signal,flag = self.checking_when_done(flag)
+        # TODO next actions according to the signal
+
 
 # def init_all_chess
 y1_plane = Plane('y',1)
 y2_plane = Plane('y',2)
 y3_plane = Plane('y',3)
 y4_plane = Plane('y',4)
-y1_plane.action(3)
+y1_plane.animate(3)
 SKY.show_sky()
