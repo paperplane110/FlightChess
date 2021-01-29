@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 22:44:19
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-26 17:08:09
+LastEditTime: 2021-01-27 13:16:06
 '''
 import copy
 from draw import Cell
@@ -181,6 +181,7 @@ class Sky():
                 cell_instance = C2P_DICT[c]
             except KeyError:
                 print("Error: Color is not included:{}".format(cell_info))
+                exit()
             load_from_list(cell_matrix,cell_instance,pos)
 
 # mapping from color:str to pattern:object
