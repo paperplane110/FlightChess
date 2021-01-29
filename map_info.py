@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-24 00:29:27
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-25 01:51:48
+LastEditTime: 2021-01-27 13:28:38
 '''
 AIRLINE = [
     # 0 
@@ -32,7 +32,7 @@ AIRLINE = [
     # 47 Yellow start:48
     [5,0,'b'],[4,0,'r'],[4,1,'y'],[4,2,'g'],\
     # 51
-    [4,3,'b'],[4,4,'cbr'],[3,4,'r'],[2,4,'y'],[1,4,'g'],
+    [4,3,'b'],[4,4,'cbr'],[3,4,'r'],[2,4,'y'],[1,4,'g'],\
     # 56 ////  Red straight line
     [13,7,"r"],[12,7,"r"],[11,7,"r"],[10,7,"r"],[9,7,"r"],[8,7,'r'],\
     # 62 Yellow straight line
