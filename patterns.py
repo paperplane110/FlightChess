@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-22 22:44:59
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-25 02:12:45
+LastEditTime: 2021-01-27 13:27:41
 '''
 from draw import Cell
 ###### Unit #######
@@ -158,6 +158,7 @@ def create_arrow(direction:str) -> object:
         arrow = ArrowRight()
     else:
         print("Error, arrow direction out of range")
+        exit()
     return arrow
        
 # pc = PinkCell()
