@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-24 22:19:47
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-30 10:45:07
+LastEditTime: 2021-01-30 14:36:41
 '''
 import time
 from skymap import SKY
@@ -15,14 +15,21 @@ from map_info import R_WAIT,G_WAIT,B_WAIT,Y_WAIT
 
 class Plane():
     '''飞行棋棋子，包括棋子的初始化，棋子路线、位置、移动、应答等方法'''
-    def __init__(self,color,num):
+    def __init__(self,color:str,num:int):
+        '''
+        初始化飞行棋棋子，实例名称请以{color}{num}_plane的规范来命名
+        + color: 颜色['r','y','g','b']
+        + num: 编号[1,2,3,4]
+        '''
         self.color = color
         self.num = num
+        # init plane's pattern
         self.planecell = create_planecell(color,num)
         self.object_name = "{}{}_plane".format(color,num)
         self.routine = self.init_routine()
         self.routine_lenght = len(self.routine)
-        self.loc = 0 # 棋子的当前位置
+        self.loc = 0 # 棋子的当前在航线中的位置
+        self.pos = self.routine[self.loc] # 棋子在cell_matrix上的位置
         self.dst = 0 # 棋子该回合的应该到达的终点
         self.land_on_map()
         
@@ -44,29 +51,36 @@ class Plane():
     def land_on_map(self):
         '''Write the planecell on SKY'''
         # routine = [[0,0,'k],[...],...]
-        pos = self.routine[self.loc][0:2]
+        pos = self.pos[0:2]
         SKY.add_pattern2cell_matrix(self.planecell,pos)
+        SKY.plane_loc_wrt(self.object_name,self)
         SKY.refresh_matrix()
 
     def take_off(self):
         '''Remove the last time record on SKY'''
-        pos = self.routine[self.loc][0:2]
+        pos = self.pos[0:2]
         SKY.remove_pattern_in_cell_matrix(self.planecell,pos)
         SKY.refresh_matrix()
+
+    def refresh_pos(self):
+        '''每次更新loc后，需要刷新pos'''
+        self.pos = self.routine[self.loc]
 
     def fly(self,num):
         '''Move forward <num> locations'''
         self.loc += num
+        self.refresh_pos()
 
     def crash(self):
         '''Plane crashed and go back to the startpoint'''
         self.take_off()
         self.loc = 0
+        self.refresh_pos()
         self.land_on_map()
 
     def meet_corner(self) -> int:
         '''若遇到空白转角，则往前一格'''
-        pos_type = self.routine[self.loc][-1]
+        pos_type = self.pos[-1]
         if pos_type == 'ctr' or pos_type == 'ctl' or\
             pos_type == 'cbr' or pos_type == 'cbl':
             return 1
@@ -75,28 +89,33 @@ class Plane():
 
     def meet_same_color(self) -> bool:
         '''若遇到相同颜色格子，则跳到前方相同颜色的格子上'''
-        pos_type = self.routine[self.loc][-1]
+        pos_type = self.pos[-1]
         if pos_type == self.color:
             return True
         else:
             return False
     
     def meet_friends(self) -> bool:
-        # FIXME '''检测是否遇到自己的飞机，遇到则返回1'''
-        pos_m = self.routine[self.loc][0]
-        pos_n = self.routine[self.loc][1]
-        pattern_list = SKY.cell_matrix[pos_m][pos_n]
-        for pattern in pattern_list:
-            if pattern.color == self.color:
+        '''检测是否遇到自己的飞机，遇到则返回True'''
+        tmp_pos = self.pos[0:2]
+        for name,plane_instance in SKY.plane_location.items():
+            if plane_instance.color == self.color and plane_instance.num != self.num and plane_instance.pos == tmp_pos:
                 return True
             else:
                 continue
         return False
 
     def meet_enemies(self) -> bool:
-        # TODO'''检测是否遇到对手，遇到则返回1'''
-        pos_m = self.routine[self.loc][0]
-        pos_n = self.routine[self.loc][1]
+        '''检测是否遇到对手，遇到则返回1'''
+        tmp_pos = self.pos[0:2]
+        for name,plane_instance in SKY.plane_location.items():
+            if plane_instance.color != self.color and plane_instance.pos == tmp_pos:
+                # FIXME 触发对方的坠毁方法
+                plane_instance.crash()
+                SKY.show_sky()
+                return True
+            else:
+                continue
         return False
 
     def check_end(self) -> bool:
@@ -181,19 +200,23 @@ class Plane():
         if signal == 100:
             # TODO add winning method
             print("Congrates!")
-        elif signal == 33:
-            self.take_off()
-            self.loc = 33
-            self.land_on_map()
-            SKY.show_sky()
-            time.sleep(0.5)
-            self.animate(0,flag)
-        elif signal == 4:
-            self.animate(4,flag)
-        elif signal == 1:
+        elif flag == True:
+            if signal == 33:
+                self.take_off()
+                self.loc = 33
+                self.refresh_pos()
+                self.land_on_map()
+                SKY.show_sky()
+                time.sleep(0.5)
+                self.animate(0,flag)
+            elif signal == 4:
+                self.animate(4,flag)
+            else: pass
+        if signal == 1:
             self.animate(1,flag)
         elif signal == -1:
             # TODO 触发他人坠毁
+            
             print("OOps!")
         else:
             pass
@@ -203,4 +226,20 @@ y1_plane = Plane('y',1)
 y2_plane = Plane('y',2)
 y3_plane = Plane('y',3)
 y4_plane = Plane('y',4)
-y1_plane.animate(19)
+r1_plane = Plane('r',1)
+###### Test Code ######
+def test_shortcuts():
+    y1_plane.animate(19)
+def test_meet_same_color():
+    y1_plane.animate(3)
+def test_meet_friend():
+    y1_plane.animate(19)
+    y2_plane.animate(19)
+def test_meet_enemy():
+    y1_plane.animate(2)
+    r1_plane.animate(11)
+if __name__ == '__main__':
+    # test_shortcuts()
+    # test_meet_same_color()
+    # test_meet_friend()
+    test_meet_enemy()
