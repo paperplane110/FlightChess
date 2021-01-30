@@ -4,7 +4,7 @@
  * @Author: TianyuYuan
  * @Date: 2021-01-23 13:25:37
  * @LastEditors: TianyuYuan
- * @LastEditTime: 2021-01-29 22:31:27
+ * @LastEditTime: 2021-01-30 10:34:26
 -->
 # FlightChess
 Flight chess game played on termial
@@ -93,7 +93,7 @@ git clone https://github.com/paperplane110/FlightChess.git
         + 结束后进行终点/空白/碰撞检测
         + 颜色和捷径检测视情况而定，碰撞之前已进行过相同颜色或捷径奖励，则不再进行检测；反之则进行检测</font>
     + 若发生对手碰撞->对方返回飞机场
-+ ## 结论
++ ### 结论
   + 每次<font color=green>移动过程中</font>必须进行的检测有
     1. 终点
     2. 空白块
@@ -105,3 +105,16 @@ git clone https://github.com/paperplane110/FlightChess.git
     5. 碰撞检测
   + 颜色和捷径检测需要有一个flag，记录该回合是否已经进行了相关的奖励
   + 若已进行过颜色或捷径奖励，则在该回合不再进行第二次奖励
+
+### 2021.01.30
++ 队友检测
+  + 首先知道自己在routine上的位置
+  + 通过映射关系，得到自己在cell_matrix上的位置
+  + 遍历该位置的所有图层
+  + 出现己方颜色2次，即为遇到队友
+    + 因为棋子本身也位于该位置，所以己方颜色出现的次数应该是2次，而非1次
++ 敌方检测
+  + 首先知道自己在routine上的位置
+  + 通过映射关系，得到自己在cell_matrix上的位置
+  + 遍历该位置的所有图层
+  + 若出现颜色含有‘bg’字段，且与己方颜色不相同，则检测到敌方飞机
