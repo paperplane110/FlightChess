@@ -77,7 +77,7 @@ C_BOTTOM_RIGHT = "\
 +---+%\n\
 |  %' \n\
 +%'   "
-C_BOTTOM_lEFT = "\
+C_BOTTOM_LEFT = "\
 &+---+\n\
  `&  |\n\
    `&+"
