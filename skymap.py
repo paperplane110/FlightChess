@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 22:44:19
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-30 11:27:27
+LastEditTime: 2021-01-30 14:02:28
 '''
 import copy
 from draw import Cell
@@ -198,13 +198,13 @@ class Sky():
                     # 该函数已经改写了sky_matrix，因此无需return
                     add_pattern(x,y,sky_matrix,pattern)
 
-    def plane_loc_wrt(self,plane,loc:list):
+    def plane_loc_wrt(self,plane_name:str,plane_instance:object):
         '''记录各个飞机的位置'''
-        self.plane_location[plane] = loc
+        self.plane_location[plane_name] = plane_instance
 
-    def plane_loc_recall(self,plane) -> list:
+    def plane_loc_recall(self,plane_name) -> list:
         '''调用plane的位置'''
-        return self.plane_location[plane]
+        return self.plane_location[plane_name]
 
     def test_zebra_map(self):
         '''测试cell_matrix,refresh_matrix等方法是否可行'''
@@ -238,5 +238,7 @@ C2P_DICT = {
 }
         
 SKY = Sky(WIDTH,HEIGHT,15)
+
+###### Test Code ######
 # SKY.test_zebra_map()
 # SKY.show_sky()
