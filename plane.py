@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-24 22:19:47
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-29 23:30:36
+LastEditTime: 2021-01-30 10:45:07
 '''
 import time
 from skymap import SKY
@@ -82,13 +82,21 @@ class Plane():
             return False
     
     def meet_friends(self) -> bool:
-        '''检测是否遇到自己的飞机，遇到则返回1'''
-        # TODO need to done this
+        # FIXME '''检测是否遇到自己的飞机，遇到则返回1'''
+        pos_m = self.routine[self.loc][0]
+        pos_n = self.routine[self.loc][1]
+        pattern_list = SKY.cell_matrix[pos_m][pos_n]
+        for pattern in pattern_list:
+            if pattern.color == self.color:
+                return True
+            else:
+                continue
         return False
 
     def meet_enemies(self) -> bool:
-        '''检测是否遇到对手，遇到则返回1'''
-        # TODO need to done this
+        # TODO'''检测是否遇到对手，遇到则返回1'''
+        pos_m = self.routine[self.loc][0]
+        pos_n = self.routine[self.loc][1]
         return False
 
     def check_end(self) -> bool:
@@ -114,7 +122,8 @@ class Plane():
         self.take_off()
         self.fly(step)
         self.land_on_map()
-        time.sleep(1)
+        SKY.show_sky()
+        time.sleep(0.5)
 
     def check_while_moving(self,steps:int) ->int:
         '''移动过程中的检查，返回还应该移动的步数'''
@@ -150,7 +159,7 @@ class Plane():
         # 颜色捷径检测
         if flag == False:
             if self.check_shortcut():
-                return 32,True
+                return 33,True
             if self.meet_same_color():
                 return 4,True
         # 碰撞检测
@@ -167,15 +176,31 @@ class Plane():
             # 移动中的检查
             steps = self.check_while_moving(steps)
 
-        # TODO 移动后的检查    
+        # 移动后的检查    
         signal,flag = self.checking_when_done(flag)
-        # TODO next actions according to the signal
-
+        if signal == 100:
+            # TODO add winning method
+            print("Congrates!")
+        elif signal == 33:
+            self.take_off()
+            self.loc = 33
+            self.land_on_map()
+            SKY.show_sky()
+            time.sleep(0.5)
+            self.animate(0,flag)
+        elif signal == 4:
+            self.animate(4,flag)
+        elif signal == 1:
+            self.animate(1,flag)
+        elif signal == -1:
+            # TODO 触发他人坠毁
+            print("OOps!")
+        else:
+            pass
 
 # def init_all_chess
 y1_plane = Plane('y',1)
 y2_plane = Plane('y',2)
 y3_plane = Plane('y',3)
 y4_plane = Plane('y',4)
-y1_plane.animate(3)
-SKY.show_sky()
+y1_plane.animate(19)
