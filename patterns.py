@@ -160,7 +160,8 @@ def create_arrow(direction:str) -> object:
         print("Error, arrow direction out of range")
         exit()
     return arrow
-       
+
+###### Test Code ######       
 # pc = PinkCell()
 # pc.show_cell()
 # def strip_color(string:str):
