@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-24 22:19:47
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-31 18:37:09
+LastEditTime: 2021-01-31 23:21:41
 '''
 import time
 from skymap import SKY
@@ -23,14 +23,16 @@ class Plane():
         '''
         self.color = color
         self.num = num
+        self.object_name = "{}{}_plane".format(color,num) # 实例名与object_name是无关的，object_name是程序内部对于该棋子的叫法
+        self.in_airport = True
+        self.win = False
         # init plane's pattern
         self.planecell = create_planecell(color,num)
-        self.object_name = "{}{}_plane".format(color,num) # 实例名与object_name是无关的，object_name是程序内部对于该棋子的叫法
         self.routine = self.init_routine()
         self.routine_lenght = len(self.routine)
         self.loc = 0 # 棋子的当前在航线中的位置
         self.pos = self.routine[self.loc] # 棋子在cell_matrix上的位置
-        self.dst = 0 # 棋子该回合的应该到达的终点
+        self.dst = 0 # FIXME 用途？：棋子该回合的应该到达的终点 
         self.land_on_map()
         
     def init_routine(self) -> list:
@@ -131,7 +133,7 @@ class Plane():
             return False
     
     def onestep(self,step:int):
-        '''行动一步，包括刷新屏幕，停留1s'''
+        '''行动一步，包括刷新屏幕，停留0.5s'''
         if step > 0:
             step = 1
         else:
@@ -211,7 +213,7 @@ class Plane():
             pass
 
     def animate(self,steps,flag=False):
-        # 移动
+        # 移动动画
         while steps != 0:
             self.onestep(steps)
             # 移动中的检查
@@ -221,6 +223,7 @@ class Plane():
         signal,flag = self.checking_when_done(flag)
         self.event_of_check(signal,flag)
 
+###### Test Code ######
 # def init_all_chess
 y1_plane = Plane('y',1)
 y2_plane = Plane('y',2)
@@ -228,8 +231,6 @@ y3_plane = Plane('y',3)
 y4_plane = Plane('y',4)
 r1_plane = Plane('r',1)
 r2_plane = Plane('r',2)
-
-###### Test Code ######
 def test_shortcuts():
     y1_plane.animate(19)
 def test_meet_same_color():
