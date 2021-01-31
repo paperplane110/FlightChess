@@ -4,10 +4,12 @@
  * @Author: TianyuYuan
  * @Date: 2021-01-23 13:25:37
  * @LastEditors: TianyuYuan
- * @LastEditTime: 2021-01-31 19:43:45
+ * @LastEditTime: 2021-01-31 20:24:18
 -->
 # FlightChess
 Flight chess game played on termial
+
+[![Software | 100 Days of Code](https://www.software.com/badges/100-days-of-code)](https://www.software.com/100-days-of-code)
 ## Usage
 Open the terminal and go to a dir where you want to install this game, then clone the code to the local path.
 ### For example:
@@ -16,7 +18,6 @@ cd ~/Desktop/
 git clone https://github.com/paperplane110/FlightChess.git
 ```
 ## Game Composition
-
 
 
 ## Thinking
