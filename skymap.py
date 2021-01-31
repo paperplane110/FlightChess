@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 22:44:19
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-30 14:02:28
+LastEditTime: 2021-01-31 21:38:29
 '''
 import copy
 from draw import Cell
@@ -105,7 +105,7 @@ class Sky():
             for bit in row:
                 line += bit
             line += "\n"
-        print(line+"\r") 
+        print(line,end="\r") 
 
     def show_range(self):
         matrix = copy.deepcopy(self.matrix)
