@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-24 22:19:47
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-30 14:36:41
+LastEditTime: 2021-01-31 18:37:09
 '''
 import time
 from skymap import SKY
@@ -17,7 +17,7 @@ class Plane():
     '''飞行棋棋子，包括棋子的初始化，棋子路线、位置、移动、应答等方法'''
     def __init__(self,color:str,num:int):
         '''
-        初始化飞行棋棋子，实例名称请以{color}{num}_plane的规范来命名
+        初始化飞行棋棋子
         + color: 颜色['r','y','g','b']
         + num: 编号[1,2,3,4]
         '''
@@ -25,7 +25,7 @@ class Plane():
         self.num = num
         # init plane's pattern
         self.planecell = create_planecell(color,num)
-        self.object_name = "{}{}_plane".format(color,num)
+        self.object_name = "{}{}_plane".format(color,num) # 实例名与object_name是无关的，object_name是程序内部对于该棋子的叫法
         self.routine = self.init_routine()
         self.routine_lenght = len(self.routine)
         self.loc = 0 # 棋子的当前在航线中的位置
@@ -97,9 +97,8 @@ class Plane():
     
     def meet_friends(self) -> bool:
         '''检测是否遇到自己的飞机，遇到则返回True'''
-        tmp_pos = self.pos[0:2]
         for name,plane_instance in SKY.plane_location.items():
-            if plane_instance.color == self.color and plane_instance.num != self.num and plane_instance.pos == tmp_pos:
+            if plane_instance.color == self.color and plane_instance.num != self.num and plane_instance.pos == self.pos:
                 return True
             else:
                 continue
@@ -107,10 +106,9 @@ class Plane():
 
     def meet_enemies(self) -> bool:
         '''检测是否遇到对手，遇到则返回1'''
-        tmp_pos = self.pos[0:2]
         for name,plane_instance in SKY.plane_location.items():
-            if plane_instance.color != self.color and plane_instance.pos == tmp_pos:
-                # FIXME 触发对方的坠毁方法
+            if plane_instance.color != self.color and plane_instance.pos == self.pos:
+                #触发对方的坠毁方法
                 plane_instance.crash()
                 SKY.show_sky()
                 return True
@@ -189,7 +187,31 @@ class Plane():
         else: 
             return 0,flag
 
+    def event_of_check(self,signal,flag):
+        '''移动后的检查，所触发的事件'''
+        if signal == 100:
+            # TODO add winning method
+            print("Congrates!")
+        elif signal == 33:
+            self.take_off()
+            self.loc = 33
+            self.refresh_pos()
+            self.land_on_map()
+            SKY.show_sky()
+            time.sleep(0.5)
+            self.animate(0,flag)
+        elif signal == 4:
+            self.animate(4,flag)
+        elif signal == 1:
+            self.animate(1,flag)
+        elif signal == -1:
+            # 触发对方坠毁的事件写在了检测方法中，方便一些
+            print("OOps!")
+        else:
+            pass
+
     def animate(self,steps,flag=False):
+        # 移动
         while steps != 0:
             self.onestep(steps)
             # 移动中的检查
@@ -197,29 +219,7 @@ class Plane():
 
         # 移动后的检查    
         signal,flag = self.checking_when_done(flag)
-        if signal == 100:
-            # TODO add winning method
-            print("Congrates!")
-        elif flag == True:
-            if signal == 33:
-                self.take_off()
-                self.loc = 33
-                self.refresh_pos()
-                self.land_on_map()
-                SKY.show_sky()
-                time.sleep(0.5)
-                self.animate(0,flag)
-            elif signal == 4:
-                self.animate(4,flag)
-            else: pass
-        if signal == 1:
-            self.animate(1,flag)
-        elif signal == -1:
-            # TODO 触发他人坠毁
-            
-            print("OOps!")
-        else:
-            pass
+        self.event_of_check(signal,flag)
 
 # def init_all_chess
 y1_plane = Plane('y',1)
@@ -227,6 +227,8 @@ y2_plane = Plane('y',2)
 y3_plane = Plane('y',3)
 y4_plane = Plane('y',4)
 r1_plane = Plane('r',1)
+r2_plane = Plane('r',2)
+
 ###### Test Code ######
 def test_shortcuts():
     y1_plane.animate(19)
@@ -236,8 +238,9 @@ def test_meet_friend():
     y1_plane.animate(19)
     y2_plane.animate(19)
 def test_meet_enemy():
-    y1_plane.animate(2)
-    r1_plane.animate(11)
+    y1_plane.animate(4)
+    r1_plane.animate(16)
+    r2_plane.animate(16)
 if __name__ == '__main__':
     # test_shortcuts()
     # test_meet_same_color()
