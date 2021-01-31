@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-29 23:34:06
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-31 19:50:31
+LastEditTime: 2021-01-31 23:32:50
 '''
 import random
 from draw import Cell
@@ -31,7 +31,7 @@ class Dice():
         self.init_dice()
 
     def init_dice(self):
-        num = "06"
+        num = "6"
         pattern = dice_pattern(num)
         dice = Cell(self.width,self.height,self.color,'b',pattern)
         SKY.add_pattern2cell_matrix(dice,self.pos)
@@ -45,7 +45,7 @@ class Dice():
         pattern = dice_pattern(num)
         dice = Cell(self.width,self.height,self.color,'b',pattern)
         # 先拿起骰子，擦除上一轮骰子在cell上留下的记录，以免写不到sky上
-        SKY.remove_pattern_in_cell_matrix(self.last_turn_dice)
+        SKY.remove_pattern_in_cell_matrix(self.last_turn_dice,self.pos)
         SKY.refresh_matrix()
         # 放下骰子，并展示在terminal上
         SKY.add_pattern2cell_matrix(dice,self.pos)
