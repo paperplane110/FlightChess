@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-22 22:44:59
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-31 19:15:12
+LastEditTime: 2021-02-01 00:39:42
 '''
 from draw import Cell
 ###### Unit #######
@@ -162,13 +162,12 @@ def create_arrow(direction:str) -> object:
     return arrow
 
 ###### Dice ######
-def dice_pattern(num:int):
+def dice_pattern(string):
     '''根据点数，产生骰子的图案'''
-    number = "0"+str(num)
     pattern ="\
-      \n\
-  {}  \n\
-      ".format(number)
+/∞∞∞∞\\\n\
+¡{}¡\n\
+\\∞∞∞∞/".format(string)
     return pattern
 
 ###### Test Code ######       

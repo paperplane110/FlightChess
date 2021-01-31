@@ -4,7 +4,7 @@
  * @Author: TianyuYuan
  * @Date: 2021-01-23 13:25:37
  * @LastEditors: TianyuYuan
- * @LastEditTime: 2021-01-31 23:21:01
+ * @LastEditTime: 2021-02-01 00:41:43
 -->
 # FlightChess
 Flight chess game played on termial
@@ -24,7 +24,7 @@ python3 flight_chess.py
 ## Game Composition
 
 
-## Thinking
+## DevLog
 ### 2021.01.23
 + 数字矩阵记录真的好吗？
     + 方便对于空格的覆盖 0+n=n
@@ -131,3 +131,6 @@ python3 flight_chess.py
     + 投骰子
     + 移动飞机
     + ~~判断自己是否赢了~~ -> 是否应该交给game rule去记录和判断，可能需要重构代码plane.py
+
+### 2021.02.01
++ 屏幕刷新太慢，费眼睛，或许考虑去掉动画
