@@ -4,7 +4,7 @@
  * @Author: TianyuYuan
  * @Date: 2021-01-23 13:25:37
  * @LastEditors: TianyuYuan
- * @LastEditTime: 2021-01-30 10:34:26
+ * @LastEditTime: 2021-01-31 19:43:45
 -->
 # FlightChess
 Flight chess game played on termial
@@ -118,3 +118,11 @@ git clone https://github.com/paperplane110/FlightChess.git
   + 通过映射关系，得到自己在cell_matrix上的位置
   + 遍历该位置的所有图层
   + 若出现颜色含有‘bg’字段，且与己方颜色不相同，则检测到敌方飞机
+
+### 2021.01.31
++ 玩家
+  + 初始化：什么颜色，飞机
+  + 行为：
+    + 投骰子
+    + 移动飞机
+    + ~~判断自己是否赢了~~ -> 是否应该交给game rule去记录和判断，可能需要重构代码plane.py
