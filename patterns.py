@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-22 22:44:59
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-27 13:27:41
+LastEditTime: 2021-01-31 19:15:12
 '''
 from draw import Cell
 ###### Unit #######
@@ -160,6 +160,16 @@ def create_arrow(direction:str) -> object:
         print("Error, arrow direction out of range")
         exit()
     return arrow
+
+###### Dice ######
+def dice_pattern(num:int):
+    '''根据点数，产生骰子的图案'''
+    number = "0"+str(num)
+    pattern ="\
+      \n\
+  {}  \n\
+      ".format(number)
+    return pattern
 
 ###### Test Code ######       
 # pc = PinkCell()
