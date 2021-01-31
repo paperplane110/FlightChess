@@ -4,10 +4,10 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 22:40:54
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-31 23:28:07
+LastEditTime: 2021-02-01 00:23:35
 '''
 from player import Player
-
+from color import color
 
 def is_moveable(player) -> bool:
     '''检测有可移动的棋子吗？'''
@@ -17,7 +17,10 @@ def is_moveable(player) -> bool:
         for plane in player.planes:
             if plane.in_airport == False:
                 return True
-    return False
+        # 当投掷点数不是6时,所有飞机都在机场，则无飞机可以移动
+        return False
+    # 当投掷点数是6时，一定可以移动
+    return True
 
 def is_input_index_valid(player,index) -> bool:
     '''检测用户输入的序号是否合法'''
@@ -27,10 +30,11 @@ def is_input_index_valid(player,index) -> bool:
         # input is not number
         print("Please enter digits in range of [1,4], thanks!")
         return False
-    num = player.dice.point
-    plane = player.planes[index-1]
     if index > 4:
         print("The input number is out of range. Please choose a number between [1,4]")
+        return False
+    num = player.dice.point
+    plane = player.planes[index-1]
     if plane.win == True:
         print("This plane is already complete its task. Please choose another plane")
         return False
@@ -46,26 +50,40 @@ def is_win(player) -> bool:
             return False
     return True
 
+def quit():
+    # TODO'''打印感谢游玩，退出游戏'''
+    print("Thanks for playing! Hope you have nice time")
+    exit()
+
 def turn(player) -> bool:
     '''在一回合内，player的所有行为
     + return: True to continue
     + return: False to end the game
     '''
+    player_name = color("Player {}".format(player.color),color=player.color,bold='b')
     # 投骰子 # 显示骰子
-    player.roll_dice()
+    player.roll_the_dice()
+    dice_point = color(str(player.dice.point),color=player.color,bold='b')
     # 有可移动的吗？
     if is_moveable(player) == False:
-        # TODO 打印信息 下一回合
+        # 打印信息 下一回合
+        print("{} There is no plane can take off, push 'Enter' to continue".format(player_name))
+        confirm = input()
+        if confirm == 'q':
+            quit()
         return True
     # 有可移动的
     while True:
         # 询问移动哪个
-        print("Please choose a plane to fly")
+        print("{}, please choose a plane to fly. Dice point is: {}".format(player_name,dice_point))
         index = input()
+        if index == 'q':
+            quit()
         # 输入检测，是否合法
         if is_input_index_valid(player, index) == False:
             continue
         else:
+            index = int(index)
             player.move_plane(index)
             # 输赢判断
             if is_win(player):
@@ -97,9 +115,9 @@ def run():
 
     # 初始化游戏
     player1 = Player('r')
-    player2 = Player('g')
-    player3 = Player('b')
-    player4 = Player('y')
+    player2 = Player('y')
+    player3 = Player('g')
+    player4 = Player('b')
     players = [player1,player2,player3,player4]
     play(players)
     # TODO ask another round
