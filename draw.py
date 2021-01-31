@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 23:09:05
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-23 15:05:04
+LastEditTime: 2021-01-31 19:16:39
 '''
 from color import color
 
@@ -12,12 +12,12 @@ class Cell():
     def __init__(self,width:int,height:int,color,bold,pattern:str):
         '''
         创建一个单元格，所有的图案都绘制在该网格内
-        --width：网格宽度
-        --height：网格高度（正方形通常为width：height = 2:1）
-        --color：单元格内图案的的颜色
-        --bold：单元格内字体是否加粗，若加粗则"b"
-        --pattern：Cell的图案
-        --matrix：二维矩阵，记录了相应位置的字符及颜色
+        - width：网格宽度
+        - height：网格高度（正方形通常为width：height = 2:1）
+        - color：单元格内图案的的颜色
+        - bold：单元格内字体是否加粗，若加粗则"b"
+        - pattern：Cell的图案
+        - matrix：二维矩阵，记录了相应位置的字符及颜色
         '''
         self.width = width
         self.height = height
