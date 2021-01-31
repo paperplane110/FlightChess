@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-24 22:19:47
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-31 23:21:41
+LastEditTime: 2021-01-31 23:50:22
 '''
 import time
 from skymap import SKY
@@ -225,25 +225,25 @@ class Plane():
 
 ###### Test Code ######
 # def init_all_chess
-y1_plane = Plane('y',1)
-y2_plane = Plane('y',2)
-y3_plane = Plane('y',3)
-y4_plane = Plane('y',4)
-r1_plane = Plane('r',1)
-r2_plane = Plane('r',2)
-def test_shortcuts():
-    y1_plane.animate(19)
-def test_meet_same_color():
-    y1_plane.animate(3)
-def test_meet_friend():
-    y1_plane.animate(19)
-    y2_plane.animate(19)
-def test_meet_enemy():
-    y1_plane.animate(4)
-    r1_plane.animate(16)
-    r2_plane.animate(16)
-if __name__ == '__main__':
-    # test_shortcuts()
-    # test_meet_same_color()
-    # test_meet_friend()
-    test_meet_enemy()
+# y1_plane = Plane('y',1)
+# y2_plane = Plane('y',2)
+# y3_plane = Plane('y',3)
+# y4_plane = Plane('y',4)
+# r1_plane = Plane('r',1)
+# r2_plane = Plane('r',2)
+# def test_shortcuts():
+#     y1_plane.animate(19)
+# def test_meet_same_color():
+#     y1_plane.animate(3)
+# def test_meet_friend():
+#     y1_plane.animate(19)
+#     y2_plane.animate(19)
+# def test_meet_enemy():
+#     y1_plane.animate(4)
+#     r1_plane.animate(16)
+#     r2_plane.animate(16)
+# if __name__ == '__main__':
+#     # test_shortcuts()
+#     # test_meet_same_color()
+#     # test_meet_friend()
+#     test_meet_enemy()

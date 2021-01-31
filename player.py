@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-31 18:21:40
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-31 21:19:27
+LastEditTime: 2021-01-31 23:59:10
 '''
 from plane import Plane
 from dice import Dice
@@ -43,6 +43,7 @@ class Player():
         if plane.in_airport:
             if num == 6:
                 plane.animate(1)
+                plane.in_airport = False
             else:
                 return False
         else:
