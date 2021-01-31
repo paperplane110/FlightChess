@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-29 23:34:06
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-31 19:41:36
+LastEditTime: 2021-01-31 19:46:02
 '''
 import random
 from draw import Cell
@@ -26,6 +26,8 @@ class Dice():
         self.color = color
         self.pos = COLOR_POSITION[self.color]
         self.last_turn_dice = None
+        # dice initialization
+        self.init_dice()
 
     def init_dice(self):
         num = "06"
