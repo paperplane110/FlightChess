@@ -4,7 +4,7 @@
  * @Author: TianyuYuan
  * @Date: 2021-01-23 13:25:37
  * @LastEditors: TianyuYuan
- * @LastEditTime: 2021-01-31 20:24:18
+ * @LastEditTime: 2021-01-31 23:21:01
 -->
 # FlightChess
 Flight chess game played on termial
@@ -14,8 +14,12 @@ Flight chess game played on termial
 Open the terminal and go to a dir where you want to install this game, then clone the code to the local path.
 ### For example:
 ```bash
+# go to the directory where you feel comfortable
 cd ~/Desktop/
+# clone the repository
 git clone https://github.com/paperplane110/FlightChess.git
+# start the Game
+python3 flight_chess.py
 ```
 ## Game Composition
 
