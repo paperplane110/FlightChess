@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-24 22:19:47
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-31 23:50:22
+LastEditTime: 2021-02-01 00:26:03
 '''
 import time
 from skymap import SKY
@@ -193,7 +193,8 @@ class Plane():
         '''移动后的检查，所触发的事件'''
         if signal == 100:
             # TODO add winning method
-            print("Congrates!")
+            self.win = True
+            print("Congrates! Mission Complete!")
         elif signal == 33:
             self.take_off()
             self.loc = 33
