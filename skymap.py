@@ -4,7 +4,7 @@ version:
 Author: TianyuYuan
 Date: 2021-01-20 22:44:19
 LastEditors: TianyuYuan
-LastEditTime: 2021-01-31 21:38:29
+LastEditTime: 2021-02-01 00:45:28
 '''
 import copy
 from draw import Cell
@@ -119,8 +119,8 @@ class Sky():
     def cell2matrix(self,position:list) -> list:
         '''
         单元格矩阵与sky大矩阵的映射关系
-        --position: pattern在单元格矩阵上的坐标
-        --return: pattern左上角在sky大矩阵上的坐标
+        - position: pattern在单元格矩阵上的坐标
+        - return: pattern左上角在sky大矩阵上的坐标
         '''
         cell_m = position[0] # row
         cell_n = position[1] # col
@@ -166,10 +166,10 @@ class Sky():
         def add_pattern(x,y,matrix:list,pattern) -> list:
             '''
             将pattern中的字符写入matrix，pattern位置由其左上角的坐标决定
-            --x：pattern绘制的起点的行坐标
-            --y：pattern绘制的起点的列坐标
-            --matrix：sky_matrix 大矩阵，background
-            --pattern：pattern.matrix 单元格矩阵，记录了每个位置的字符和颜色
+            - x：pattern绘制的起点的行坐标
+            - y：pattern绘制的起点的列坐标
+            - matrix：sky_matrix 大矩阵，background
+            - pattern：pattern.matrix 单元格矩阵，记录了每个位置的字符和颜色
             '''
             m,n = pattern.shape()
             for i in range(m):
